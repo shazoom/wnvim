@@ -1,0 +1,672 @@
+{\rtf1\ansi\ansicpg1252\cocoartf1404\cocoasubrtf470
+{\fonttbl\f0\fnil\fcharset0 Verdana;}
+{\colortbl;\red255\green255\blue255;\red76\green78\blue78;\red0\green0\blue0;\red108\green5\blue211;
+\red0\green0\blue255;\red64\green128\blue0;\red0\green22\blue176;}
+\deftab480
+\pard\pardeftab480\slleading20\pardirnatural
+
+\f0\fs24 \cf2 --\cf3 \
+\pard\pardeftab480\slleading20\pardirnatural
+\cf2 --	Created by: Peter Shannon\cf3 \
+\cf2 --	Created on: 06/13/16 11:48:39\cf3 \
+\cf2 --\cf3 \
+\cf2 --	Copyright (c) 2016 \cf3 \
+\cf2 --	All Rights Reserved\cf3 \
+\cf2 --\cf3 \
+
+\b use
+\b0  \cf4 AppleScript\cf3  \cf5 version\cf3  "2.4"\
+
+\b use
+\b0  
+\i \cf5 framework
+\i0 \cf3  "Foundation"\
+
+\b use
+\b0  
+\i \cf5 scripting additions
+\i0 \cf3 \
+\
+
+\b on
+\b0  \cf6 modernIterm\cf3 (\cf6 mVersion\cf3 )\
+	
+\b set
+\b0  \cf6 cmd\cf3  
+\b to
+\b0  "echo '" & \cf6 mVersion\cf3  & "' | sed 's/\\\\./\\\\\
+/g'"\
+	
+\b set
+\b0  \cf6 mParts\cf3  
+\b to
+\b0  
+\i \cf5 paragraphs
+\i0 \cf3  
+\b of
+\b0  (
+\b \cf7 do shell script
+\b0 \cf3  \cf6 cmd\cf3 )\
+	
+\b set
+\b0  \cf6 major\cf3  
+\b to
+\b0  
+\i \cf5 item
+\i0 \cf3  1 
+\b of
+\b0  \cf6 mParts\cf3 \
+	
+\b set
+\b0  \cf6 minor\cf3  
+\b to
+\b0  
+\i \cf5 item
+\i0 \cf3  2 
+\b of
+\b0  \cf6 mParts\cf3 \
+	
+\b set
+\b0  \cf6 vMinor\cf3  
+\b to
+\b0  
+\i \cf5 item
+\i0 \cf3  3 
+\b of
+\b0  \cf6 mParts\cf3 \
+	\
+	
+\b if
+\b0  (\cf6 major\cf3  < 3 
+\b and
+\b0  \cf6 minor\cf3  < 9 
+\b and
+\b0  \cf6 vMinor\cf3  < 20140903) 
+\b or
+\b0  \cf6 major\cf3  < 2 
+\b then
+\b0 \
+		
+\b return
+\b0  
+\i \cf4 false
+\i0 \cf3 \
+	
+\b else
+\b0 \
+		
+\b return
+\b0  
+\i \cf4 true
+\i0 \cf3 \
+	
+\b end
+\b0  
+\b if
+\b0 \
+
+\b end
+\b0  \cf6 modernIterm\cf3 \
+\
+
+\b on
+\b0  \cf6 getInstalled\cf3 ()\
+	
+\b set
+\b0  \cf6 gotTerminal\cf3  
+\b to
+\b0  
+\i \cf4 false
+\i0 \cf3 \
+	
+\b try
+\b0 \
+		
+\b \cf7 do shell script
+\b0 \cf3  "osascript -e 'exists application \\"Terminal\\"'"\
+		
+\b set
+\b0  \cf6 gotTerminal\cf3  
+\b to
+\b0  
+\i \cf4 true
+\i0 \cf3 \
+	
+\b end
+\b0  
+\b try
+\b0 \
+	\
+	
+\b set
+\b0  \cf6 gotIterm\cf3  
+\b to
+\b0  
+\i \cf4 false
+\i0 \cf3 \
+	
+\b set
+\b0  \cf6 supportedIterm\cf3  
+\b to
+\b0  
+\i \cf4 false
+\i0 \cf3 \
+	
+\b try
+\b0 \
+		
+\b \cf7 do shell script
+\b0 \cf3  "osascript -e 'exists application \\"iTerm\\"'"\
+		
+\b set
+\b0  \cf6 gotIterm\cf3  
+\b to
+\b0  
+\i \cf4 true
+\i0 \cf3 \
+	
+\b end
+\b0  
+\b try
+\b0 \
+	\
+	
+\b tell
+\b0  
+\i \cf5 application
+\i0 \cf3  "iTerm"\
+		
+\b set
+\b0  \cf6 mVersion\cf3  
+\b to
+\b0  
+\b get
+\b0  
+\i \cf5 version
+\i0 \cf3  
+\b as
+\b0  
+\i \cf5 string
+\i0 \cf3 \
+	
+\b end
+\b0  
+\b tell
+\b0 \
+	
+\b set
+\b0  \cf6 supportedIterm\cf3  
+\b to
+\b0  \cf6 modernIterm\cf3 (\cf6 mVersion\cf3 )\
+	
+\b return
+\b0  \{\cf6 gotTerminal\cf3 , \cf6 gotIterm\cf3 , \cf6 supportedIterm\cf3 \}\
+
+\b end
+\b0  \cf6 getInstalled\cf3 \
+\
+
+\b on
+\b0  \cf6 getTermList\cf3 (\cf6 installed\cf3 )\
+	
+\b set
+\b0  \cf6 terminalList\cf3  
+\b to
+\b0  \{\}\
+	
+\b if
+\b0  
+\i \cf5 item
+\i0 \cf3  1 
+\b of
+\b0  \cf6 installed\cf3  
+\b then
+\b0 \
+		
+\b set
+\b0  
+\b end
+\b0  
+\b of
+\b0  \cf6 terminalList\cf3  
+\b to
+\b0  "Terminal"\
+	
+\b end
+\b0  
+\b if
+\b0 \
+	
+\b if
+\b0  
+\i \cf5 item
+\i0 \cf3  2 
+\b of
+\b0  \cf6 installed\cf3  
+\b and
+\b0  
+\i \cf5 item
+\i0 \cf3  3 
+\b of
+\b0  \cf6 installed\cf3  
+\b then
+\b0 \
+		
+\b set
+\b0  
+\b end
+\b0  
+\b of
+\b0  \cf6 terminalList\cf3  
+\b to
+\b0  "iTerm"\
+	
+\b end
+\b0  
+\b if
+\b0 \
+	
+\b return
+\b0  \cf6 terminalList\cf3 \
+
+\b end
+\b0  \cf6 getTermList\cf3 \
+\
+
+\b on
+\b0  \cf6 chooseTerminal\cf3 (\cf6 terminalList\cf3 , \cf6 theDefaults\cf3 )\
+	
+\b set
+\b0  \cf6 useTerm\cf3  
+\b to
+\b0  ""\
+	
+\b try
+\b0 \
+		
+\b set
+\b0  \cf6 useTerm\cf3  
+\b to
+\b0  \cf6 theDefaults's\cf3  \cf6 stringForKey\cf3 :"useTerm"\
+	
+\b end
+\b0  
+\b try
+\b0 \
+	
+\b if
+\b0  \cf6 useTerm\cf3  = "" 
+\b or
+\b0  \cf6 useTerm\cf3  = 
+\i \cf5 missing value
+\i0 \cf3  
+\b then
+\b0 \
+		
+\b set
+\b0  \cf6 useTerm\cf3  
+\b to
+\b0  
+\i \cf5 item
+\i0 \cf3  1 
+\b of
+\b0  \cf6 terminalList\cf3 \
+	
+\b end
+\b0  
+\b if
+\b0 \
+	
+\b set
+\b0  \cf6 mDefaults\cf3  
+\b to
+\b0  \{\cf6 useTerm\cf3  
+\b as
+\b0  
+\i \cf5 text
+\i0 \cf3 \}\
+	
+\b set
+\b0  \cf6 terminal\cf3  
+\b to
+\b0  
+\b \cf7 choose from list
+\b0 \cf3  \cf6 terminalList\cf3  \cf7 with prompt\cf3  "Run Neovim in:" \cf7 default items\cf3  \cf6 mDefaults\cf3  
+\b without
+\b0  \cf7 empty selection allowed\cf3 \
+	
+\b if
+\b0  \cf6 terminal\cf3  \uc0\u8800  
+\i \cf4 false
+\i0 \cf3  
+\b then
+\b0 \
+		
+\b return
+\b0  
+\i \cf5 item
+\i0 \cf3  1 
+\b of
+\b0  \cf6 terminal\cf3 \
+	
+\b else
+\b0 \
+		
+\b error
+\b0  \cf5 number\cf3  -128\
+	
+\b end
+\b0  
+\b if
+\b0 \
+
+\b end
+\b0  \cf6 chooseTerminal\cf3 \
+\
+
+\b on
+\b0  \cf6 initialise\cf3 ()\
+	
+\b set
+\b0  \cf6 terminalChecks\cf3  
+\b to
+\b0  \cf6 getInstalled\cf3 ()\
+	
+\b set
+\b0  \cf6 terminalList\cf3  
+\b to
+\b0  \cf6 getTermList\cf3 (\cf6 terminalChecks\cf3 )\
+	
+\b set
+\b0  \cf6 termCount\cf3  
+\b to
+\b0  
+\b \cf5 count
+\b0 \cf3  
+\i \cf5 items
+\i0 \cf3  
+\b in
+\b0  \cf6 terminalList\cf3 \
+	
+\b if
+\b0  \cf6 termCount\cf3  = 0 
+\b then
+\b0 \
+		
+\b error
+\b0  "Neither Terminal nor a compatible iTerm seem to be installed"\
+	
+\b end
+\b0  
+\b if
+\b0 \
+	
+\b return
+\b0  \cf6 terminalList\cf3 \
+
+\b end
+\b0  \cf6 initialise\cf3 \
+\
+
+\b on
+\b0  \cf6 getDefaults\cf3 ()\
+	
+\b if
+\b0  
+\b my
+\b0  \cf4 id\cf3  = 
+\i \cf5 missing value
+\i0 \cf3  
+\b then
+\b0  
+\b error
+\b0  "This code works only in an applet or script bundle."\
+	
+\b if
+\b0  
+\i \cf4 current application's
+\i0 \cf3  \cf4 id\cf3  = 
+\b my
+\b0  \cf4 id\cf3  
+\b then
+\b0  \cf2 -- must be running as applet\cf3 \
+		
+\b set
+\b0  \cf6 theDefaults\cf3  
+\b to
+\b0  
+\i \cf4 current application's
+\i0 \cf3  \cf6 NSUserDefaults's\cf3  \cf6 standardUserDefaults\cf3 ()\
+	
+\b else
+\b0 \
+		\cf2 -- being run by editor or other host app\cf3 \
+		
+\b set
+\b0  \cf6 theDefaults\cf3  
+\b to
+\b0  
+\i \cf4 current application's
+\i0 \cf3  \cf6 NSUserDefaults's\cf3  \cf6 alloc\cf3 ()'s \cf6 initWithSuiteName\cf3 :(
+\b my
+\b0  \cf4 id\cf3 )\
+	
+\b end
+\b0  
+\b if
+\b0 \
+	
+\b return
+\b0  \cf6 theDefaults\cf3 \
+
+\b end
+\b0  \cf6 getDefaults\cf3 \
+\
+
+\b on
+\b0  
+\b \cf5 open
+\b0 \cf3  (\cf6 pFile\cf3 )\
+	
+\b set
+\b0  \cf6 theDefaults\cf3  
+\b to
+\b0  \cf6 getDefaults\cf3 ()\
+	
+\b set
+\b0  \cf6 terminalList\cf3  
+\b to
+\b0  \cf6 initialise\cf3 ()\
+	
+\b set
+\b0  \cf6 useTerm\cf3  
+\b to
+\b0  ""\
+	
+\b try
+\b0 \
+		
+\b set
+\b0  \cf6 useTerm\cf3  
+\b to
+\b0  \cf6 theDefaults's\cf3  \cf6 stringForKey\cf3 :"useTerm"\
+		
+\b set
+\b0  \cf6 useTerm\cf3  
+\b to
+\b0  \cf6 useTerm\cf3  
+\b as
+\b0  
+\i \cf5 text
+\i0 \cf3 \
+	
+\b end
+\b0  
+\b try
+\b0 \
+	\
+	
+\b if
+\b0  \cf6 useTerm\cf3  = "" 
+\b or
+\b0  \cf6 useTerm\cf3  = 
+\i \cf5 missing value
+\i0 \cf3  
+\b then
+\b0 \
+		
+\b set
+\b0  \cf6 useTerm\cf3  
+\b to
+\b0  
+\i \cf5 item
+\i0 \cf3  1 
+\b of
+\b0  \cf6 terminalList\cf3 \
+	
+\b end
+\b0  
+\b if
+\b0 \
+	\
+	
+\b set
+\b0  \cf6 mPath\cf3  
+\b to
+\b0  \cf4 quoted form\cf3  
+\b of
+\b0  (\cf4 POSIX path\cf3  
+\b of
+\b0  \cf6 pFile\cf3 )\
+	
+\b if
+\b0  \cf6 useTerm\cf3  = "iTerm" 
+\b then
+\b0 \
+		
+\b tell
+\b0  
+\i \cf5 application
+\i0 \cf3  "iTerm"\
+			
+\b set
+\b0  \cf6 newWindow\cf3  
+\b to
+\b0  (
+\b \cf5 create window with profile
+\b0 \cf3  "Default")\
+			
+\b tell
+\b0  \cf4 current session\cf3  
+\b of
+\b0  \cf6 newWindow\cf3 \
+				
+\b \cf5 write
+\b0 \cf3  \cf5 text\cf3  "nvim -f " & \cf6 mPath\cf3  & "; exit 0"\
+			
+\b end
+\b0  
+\b tell
+\b0 \
+		
+\b end
+\b0  
+\b tell
+\b0 \
+	
+\b else
+\b0  
+\b if
+\b0  \cf6 useTerm\cf3  = "Terminal" 
+\b then
+\b0 \
+		
+\b if
+\b0  
+\i \cf5 application
+\i0 \cf3  "Terminal" 
+\b is
+\b0  \cf4 running\cf3  
+\b then
+\b0 \
+			
+\b tell
+\b0  
+\i \cf5 application
+\i0 \cf3  "Terminal"\
+				
+\b \cf5 activate
+\b0 \cf3 \
+				
+\b \cf5 do script
+\b0 \cf3  "nvim -f " & \cf6 mPath\cf3  & "; exit 0" \cf5 in\cf3  
+\i \cf5 window
+\i0 \cf3  1\
+			
+\b end
+\b0  
+\b tell
+\b0 \
+		
+\b else
+\b0 \
+			
+\b tell
+\b0  
+\i \cf5 application
+\i0 \cf3  "Terminal"\
+				
+\b \cf5 launch
+\b0 \cf3 \
+				
+\b \cf5 do script
+\b0 \cf3  "nvim -f " & \cf6 mPath\cf3  & "; exit 0" \cf5 in\cf3  
+\i \cf5 window
+\i0 \cf3  1\
+			
+\b end
+\b0  
+\b tell
+\b0 \
+		
+\b end
+\b0  
+\b if
+\b0 \
+	
+\b end
+\b0  
+\b if
+\b0 \
+
+\b end
+\b0  
+\b \cf5 open
+\b0 \cf3 \
+\
+
+\b on
+\b0  
+\b \cf5 run
+\b0 \cf3  (\cf6 args\cf3 )\
+	
+\b set
+\b0  \cf6 theDefaults\cf3  
+\b to
+\b0  \cf6 getDefaults\cf3 ()\
+	\cf6 theDefaults's\cf3  \cf6 registerDefaults\cf3 :\{\cf6 useTerm\cf3 :"iTerm"\}\
+	
+\b set
+\b0  \cf6 terminalList\cf3  
+\b to
+\b0  \cf6 initialise\cf3 ()\
+	
+\b set
+\b0  \cf6 terminal\cf3  
+\b to
+\b0  \cf6 chooseTerminal\cf3 (\cf6 terminalList\cf3 , \cf6 theDefaults\cf3 )\
+	\cf6 theDefaults's\cf3  \cf6 setObject\cf3 :\cf6 terminal\cf3  \cf6 forKey\cf3 :"useTerm"\
+
+\b end
+\b0  
+\b \cf5 run}
