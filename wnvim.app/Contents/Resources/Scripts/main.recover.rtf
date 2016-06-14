@@ -1,12 +1,11 @@
 {\rtf1\ansi\ansicpg1252\cocoartf1404\cocoasubrtf470
-{\fonttbl\f0\fnil\fcharset0 Verdana;}
+{\fonttbl\f0\fnil\fcharset0 Verdana;\f1\fnil\fcharset0 AppleColorEmoji;}
 {\colortbl;\red255\green255\blue255;\red76\green78\blue78;\red0\green0\blue0;\red108\green5\blue211;
 \red0\green0\blue255;\red64\green128\blue0;\red0\green22\blue176;}
 \deftab480
 \pard\pardeftab480\slleading20\pardirnatural
 
 \f0\fs24 \cf2 --\cf3 \
-\pard\pardeftab480\slleading20\pardirnatural
 \cf2 --	Created by: Peter Shannon\cf3 \
 \cf2 --	Created on: 06/13/16 11:48:39\cf3 \
 \cf2 --\cf3 \
@@ -116,26 +115,16 @@
 \b0  \cf6 gotTerminal\cf3  
 \b to
 \b0  
-\i \cf4 false
-\i0 \cf3 \
-	
-\b try
-\b0 \
-		
-\b \cf7 do shell script
-\b0 \cf3  "osascript -e 'exists application \\"Terminal\\"'"\
-		
-\b set
-\b0  \cf6 gotTerminal\cf3  
-\b to
-\b0  
 \i \cf4 true
 \i0 \cf3 \
-	
-\b end
-\b0  
-\b try
-\b0 \
+	\cf2 -- This causes Terminal.app to start and breaks things 
+\f1 \uc0\u55357 \u56897 
+\f0 \cf3 \
+	\cf2 -- Terminal.app scripting sucks!\cf3 \
+	\cf2 -- try\cf3 \
+	\cf2 --	 do shell script "osascript -e 'exists application \\"Terminal\\"'"\cf3 \
+	\cf2 --	 set gotTerminal to true\cf3 \
+	\cf2 -- end try\cf3 \
 	\
 	
 \b set
@@ -529,6 +518,10 @@
 \b \cf5 open
 \b0 \cf3  (\cf6 pFile\cf3 )\
 	
+\b \cf7 display alert
+\b0 \cf3  \cf6 pFile\cf3 \
+	\
+	
 \b set
 \b0  \cf6 theDefaults\cf3  
 \b to
@@ -613,10 +606,43 @@
 \b \cf5 activate
 \b0 \cf3 \
 				
+\b tell
+\b0  
+\i \cf5 application
+\i0 \cf3  "System Events" 
+\b to
+\b0  
+\b tell
+\b0  
+\i \cf5 process
+\i0 \cf3  "Terminal.app" 
+\b to
+\b0  
+\b \cf5 keystroke
+\b0 \cf3  "n" \cf5 using\cf3  
+\i \cf4 command down
+\i0 \cf3 \
+				
+\b try
+\b0 \
+					
 \b \cf5 do script
 \b0 \cf3  "nvim -f " & \cf6 mPath\cf3  & "; exit 0" \cf5 in\cf3  
 \i \cf5 window
 \i0 \cf3  1\
+				
+\b on
+\b0  
+\b error
+\b0  \cf5 number\cf3  -1728\
+					
+\b \cf5 do script
+\b0 \cf3  "nvim -f " & \cf6 mPath\cf3  & "; exit 0"\
+				
+\b end
+\b0  
+\b try
+\b0 \
 			
 \b end
 \b0  
@@ -635,9 +661,10 @@
 \b0 \cf3 \
 				
 \b \cf5 do script
-\b0 \cf3  "nvim -f " & \cf6 mPath\cf3  & "; exit 0" \cf5 in\cf3  
-\i \cf5 window
-\i0 \cf3  1\
+\b0 \cf3  "nvim -f " & \cf6 mPath\cf3  & "; exit 0"\
+				
+\b \cf5 activate
+\b0 \cf3 \
 			
 \b end
 \b0  
@@ -681,7 +708,11 @@
 \b to
 \b0  \cf6 chooseTerminal\cf3 (\cf6 terminalList\cf3 , \cf6 theDefaults\cf3 )\
 	\cf6 theDefaults's\cf3  \cf6 setObject\cf3 :\cf6 terminal\cf3  \cf6 forKey\cf3 :"useTerm"\
+	\cf2 --set mPath to POSIX path of ((path to home folder as text) & "foo.md")\cf3 \
+	\cf2 --open (mPath)\cf3 \
 
 \b end
 \b0  
-\b \cf5 run}
+\b \cf5 run
+\b0 \cf3 \
+}
