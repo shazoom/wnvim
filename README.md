@@ -1,9 +1,7 @@
 # wnvim
-Applescript applet which launches Neovim in Terminal.app or iTerm2.app. 
+An Applescript applet which launches Neovim in Terminal.app or iTerm2.app. 
 It is designed to integrated Neovim into GUI tools which can open files 
 in your prefered editor.
-
-[note, the Terminal.app support is broken at the momemnt]
 
 It has run and read handlers. Opening it allows Terminal or iTerm to be 
 chosen (iTerm works better; it closes automatically when nvim exits,)
