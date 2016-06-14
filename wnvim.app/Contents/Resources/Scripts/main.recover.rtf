@@ -464,19 +464,7 @@
 \
 
 \b on
-\b0  
-\b \cf5 open
-\b0 \cf3  (\cf6 pFile\cf3 )\
-	
-\b set
-\b0  \cf6 theDefaults\cf3  
-\b to
-\b0  \cf6 getDefaults\cf3 ()\
-	
-\b set
-\b0  \cf6 terminalList\cf3  
-\b to
-\b0  \cf6 initialise\cf3 ()\
+\b0  \cf6 getTermPref\cf3 (\cf6 theDefaults\cf3 , \cf6 terminalList\cf3 )\
 	
 \b set
 \b0  \cf6 useTerm\cf3  
@@ -528,6 +516,33 @@
 \b0  
 \b if
 \b0 \
+	
+\b return
+\b0  \cf6 useTerm\cf3 \
+
+\b end
+\b0  \cf6 getTermPref\cf3 \
+\
+
+\b on
+\b0  
+\b \cf5 open
+\b0 \cf3  (\cf6 pFile\cf3 )\
+	
+\b set
+\b0  \cf6 theDefaults\cf3  
+\b to
+\b0  \cf6 getDefaults\cf3 ()\
+	
+\b set
+\b0  \cf6 terminalList\cf3  
+\b to
+\b0  \cf6 initialise\cf3 ()\
+	
+\b set
+\b0  \cf6 useTerm\cf3  
+\b to
+\b0  \cf6 getTermPref\cf3 (\cf6 theDefaults\cf3 , \cf6 terminalList\cf3 )\
 	\
 	
 \b set
