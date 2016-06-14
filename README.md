@@ -8,6 +8,6 @@ You can get Terminal.app to exit after its shell closes too, by changing this se
 ![Terminal.app option](http://i.imgur.com/qNHuDC5.png)
 
 
-It only works with versions of iTerm which have the newer API and the stock terminal app.
+It only works with versions of iTerm which have the newer API and the stock terminal app. You will, I expect, have to change the **Allow apps downloaded from:** setting in **Security & Privacty** to **Anywhere**. This is the first time I have published an application for OS X so it would be great if someone could confirm this for me.
 
 Click on |Clone or Download| and select |Download Zip| to download the app.
